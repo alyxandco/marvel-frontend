@@ -8,7 +8,7 @@ import Header from "../components/Header";
 const Comicsbycharacter = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(null);
 
   const location = useLocation();
   const { charId, charName, charThumbPath, charThumbExt } = location.state;

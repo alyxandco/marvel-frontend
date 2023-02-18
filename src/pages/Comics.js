@@ -8,20 +8,28 @@ const Comics = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [page, setPage] = useState("");
-  const [totalPages, setTotalPages] = useState(0);
-  const [skip, setSkip] = useState(0);
 
-  //!  const skip = (pageRequired - 1) * limit;
-
-  const truncate = (string, n) => {
-    return string?.length > n ? string.substr(0, n - 1) + "…" : string;
-  };
+  // pagination
+  const [pageRequired, setPageRequired] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 100;
+  const skip = (pageRequired - 1) * limit;
 
   const handleClick = (action) => {
-    if (action === "minus") setSkip(skip - 1000);
-    else if (action === "plus") setSkip(skip + 1000);
+    if (action === "minus") setPageRequired(pageRequired - 1);
+    else if (action === "plus") setPageRequired(pageRequired + 1);
+    else if (action === "last") setPageRequired(totalPages);
   };
+
+  // fin pagination
+
+  // tronquage
+  const truncate = (string, maxlength) => {
+    return string?.length > maxlength
+      ? string.slice(0, maxlength - 1) + "…"
+      : string;
+  };
+  // fin tronquage
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,8 +40,8 @@ const Comics = () => {
         setData(response.data);
         setIsLoading(false);
         console.log(response.data.message.results);
-        setTotalPages(Math.ceil(response.data.message.count / 100));
-        console.log(totalPages);
+        setTotalPages(Math.ceil(response.data.message.count / limit));
+        console.log("totalPages :", totalPages);
       } catch (error) {
         console.log(error.message);
       }
@@ -48,7 +56,9 @@ const Comics = () => {
       <Header />
 
       <section className="comic-top-section">
-        <h1>{data.message.count} Comic(s)</h1>
+        <div>
+          <h1>{data.message.count} Comic(s)</h1>
+        </div>
         <div>
           <input
             className="search-input"
@@ -59,26 +69,46 @@ const Comics = () => {
             onChange={(event) => setSearch(event.target.value)}
           />
         </div>
-        <section className="skip">
+        <div className="skip">
           <div>
-            <button
-              onClick={() => {
-                handleClick("minus");
-                // setCounter(counter - 1);
-              }}
-            >
-              -
-            </button>
-            <span>{skip}</span>
-            <button
-              onClick={() => {
-                handleClick("plus");
-              }}
-            >
-              +
-            </button>
+            {pageRequired > 1 && data.message.count !== 0 ? (
+              <button
+                className="pagination"
+                onClick={() => {
+                  handleClick("minus");
+                }}
+              >
+                Previous page
+              </button>
+            ) : null}
+            <span>
+              page &nbsp;
+              {pageRequired} / {totalPages}
+            </span>
+
+            {pageRequired !== totalPages && data.message.count !== 0 ? (
+              <button
+                className="pagination"
+                onClick={() => {
+                  handleClick("plus");
+                }}
+              >
+                Next page
+              </button>
+            ) : null}
+
+            {pageRequired !== totalPages && data.message.count !== 0 ? (
+              <button
+                className="pagination-last"
+                onClick={() => {
+                  handleClick("last");
+                }}
+              >
+                Go to last page
+              </button>
+            ) : null}
           </div>
-        </section>
+        </div>
       </section>
       <div className="comic-container">
         {data.message.results.map((comic) => {

@@ -11,37 +11,66 @@ const Characters = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [charfavorites, setCharfavorites] = useState("");
+  const [charFavorites, setCharFavorites] = useState([]);
 
-  let charfav = JSON.stringify(charfavorites);
-  Cookies.set("Marvel-charFav", charfav, { expires: 10 });
-  console.log("string cookie :", charfavorites);
+  // pagination
+  const [pageRequired, setPageRequired] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const limit = 100;
+  const skip = (pageRequired - 1) * limit;
+
+  console.log("skip : ", skip);
+  console.log("pagerequired : ", pageRequired);
+  console.log("totalPages : ", totalPages);
+
+  const handleClick = (action) => {
+    if (action === "minus") setPageRequired(pageRequired - 1);
+    else if (action === "plus") setPageRequired(pageRequired + 1);
+    else if (action === "last") setPageRequired(totalPages);
+  };
+
+  // fin pagination
+
+  //favoris
+
+  const charFav = JSON.stringify(charFavorites);
+  console.log("charfavorites : ", charFavorites);
+  console.log("charfav : ", charFav);
+  if (charFav) {
+    Cookies.set("Marvel-charFav", charFav);
+  }
+  console.log("string cookie :", charFavorites);
   // console.log(Cookies.get("Marvel-charFav"));
-
   const cookie = Cookies.get("Marvel-charFav");
-  console.log("cookie :", cookie);
+  // console.log("cookie :", cookie);
+
+  //fin favoris
+
+  // tronquage
+  const truncate = (string, maxlength) => {
+    return string?.length > maxlength
+      ? string.slice(0, maxlength - 1) + "…"
+      : string;
+  };
+  // fin tronquage
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/characters?name=${search}`
+          `http://localhost:4000/characters?name=${search}&skip=${skip}`
         );
         setData(response.data);
         setIsLoading(false);
-        console.log(response.data.message.results);
+        console.log(response.data.message);
+        setTotalPages(Math.ceil(response.data.message.count / limit));
+        console.log("totalPages :", totalPages);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
   }, [search]);
-
-  const truncate = (string, maxlength) => {
-    return string?.length > maxlength
-      ? string.slice(0, maxlength - 1) + "…"
-      : string;
-  };
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
@@ -59,6 +88,47 @@ const Characters = () => {
             placeholder="🔍  Search for Characters"
             onChange={(event) => setSearch(event.target.value)}
           />
+        </div>
+
+        <div className="skip">
+          <div>
+            {pageRequired > 1 && data.message.count !== 0 ? (
+              <button
+                className="pagination"
+                onClick={() => {
+                  handleClick("minus");
+                }}
+              >
+                Previous page
+              </button>
+            ) : null}
+            <span>
+              page &nbsp;
+              {pageRequired} / {totalPages}
+            </span>
+
+            {pageRequired !== totalPages && data.message.count !== 0 ? (
+              <button
+                className="pagination"
+                onClick={() => {
+                  handleClick("plus");
+                }}
+              >
+                Next page
+              </button>
+            ) : null}
+
+            {pageRequired !== totalPages && data.message.count !== 0 ? (
+              <button
+                className="pagination-last"
+                onClick={() => {
+                  handleClick("last");
+                }}
+              >
+                Go to last page
+              </button>
+            ) : null}
+          </div>
         </div>
       </section>
       <div className="character-container">
@@ -79,9 +149,9 @@ const Characters = () => {
                   />
                   <p
                     onClick={() => {
-                      const newCharfavorites = [...charfavorites];
-                      newCharfavorites.push(character._id);
-                      setCharfavorites(newCharfavorites);
+                      const newCharFavorites = [...charFavorites];
+                      newCharFavorites.push(character._id);
+                      setCharFavorites(newCharFavorites);
                     }}
                   >
                     <span>★ {truncate(`${character.name}`, 40)}</span>
