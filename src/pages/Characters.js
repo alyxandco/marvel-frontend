@@ -158,7 +158,7 @@ const Characters = () => {
                         charThumbExt: character.thumbnail.extension,
                       }}
                     >
-                      <button className="pagination">See his Comics</button>
+                      <button className="pagination">See Comics</button>
                     </Link>
                   </div>
                 </div>

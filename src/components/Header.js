@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Header = () => {
   try {
     return (
-      <header className="hidden">
+      <header>
         <Link to="/">
           <img
             className="image-logo-header"

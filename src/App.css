@@ -14,7 +14,6 @@ body {
 }
 
 h1 {
-  /* text-align: center; */
   margin: 30px 0;
   font-weight: bold;
   font-size: 40px;
@@ -41,15 +40,10 @@ h1 {
 /* ----- xx header xx ---- */
 /* ------------------------*/
 
-/* .hidden {
-  visibility: hidden;
-} */
-
 header {
   width: 1300px;
   height: 80px;
   border-bottom: 1px solid rgb(85, 84, 84);
-  /* border-right: 1px solid rgb(85, 84, 84); */
   display: flex;
   margin: auto;
   justify-content: center;
@@ -61,10 +55,6 @@ header {
   display: flex;
   justify-content: space-evenly;
   width: 1300px;
-  /* position: absolute;
-  top: 230px;
-  left: 80px; */
-  /* gap: 30px; */
 }
 
 .image-logo-header {
@@ -74,10 +64,8 @@ header {
 .nav-header button {
   height: 60px;
   width: 180px;
-  /* width: 115px; */
   background-color: #222121;
   color: #ffffff;
-  /* font-weight: bolder; */
   font-family: roboto condensed;
   border: none;
   border-bottom: solid 1px #ed1d25;
@@ -91,15 +79,12 @@ header {
 /* ------------------------*/
 
 .home-container {
-  /* width: 1300px; */
   height: 102vh;
   object-fit: cover;
   position: relative;
 }
 
 .main-nav-home {
-  /* width: 100%;
-  height: 100%; */
   background-color: #fff;
   position: absolute;
   top: 80px;
@@ -111,26 +96,18 @@ header {
 .image-logo-home {
   width: 300px;
   margin-bottom: 20px;
-
-  /* position: absolute; */
-  /* top: 90px;
-  left: 130px; */
 }
 
 .nav-home {
   display: flex;
   flex-direction: column;
   width: 300px;
-  /* position: absolute; */
-  /* top: 230px;
-  left: 130px; */
   gap: 20px;
 }
 
 .nav-home button {
   height: 60px;
   width: 300px;
-  /* width: 115px; */
   background-color: #000000;
   color: #ffffff;
   font-weight: bolder;
@@ -175,7 +152,6 @@ header {
 .char-description-button {
   height: 100%;
   width: 100%;
-  /* border: solid 1px #ed1d25; */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -188,7 +164,6 @@ header {
 }
 
 .character-container span {
-  /* background-color: #fff; */
   font-weight: bold;
   font-size: 25px;
 }
@@ -207,7 +182,6 @@ header {
   font-weight: bolder;
   border: none;
   border-radius: 5px;
-  /* font-size: 25px; */
 }
 
 .fav-button {
@@ -284,11 +258,7 @@ header {
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
-  /* align-items: flex-start; */
   gap: 20px;
-  /* white-space: wrap;
-  overflow: hidden;
-  text-overflow: ellipsis; */
 }
 
 .comic-image {
@@ -297,7 +267,6 @@ header {
 }
 
 .comic-container span {
-  /* background-color: #fff; */
   font-weight: bold;
   font-size: 22px;
 }
