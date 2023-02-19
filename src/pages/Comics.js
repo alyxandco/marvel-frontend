@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 //pages, composants
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Comics = () => {
   const [data, setData] = useState();
@@ -21,27 +22,22 @@ const Comics = () => {
     else if (action === "last") setPageRequired(totalPages);
   };
 
-  // fin pagination
-
   // tronquage
   const truncate = (string, maxlength) => {
     return string?.length > maxlength
       ? string.slice(0, maxlength - 1) + "…"
       : string;
   };
-  // fin tronquage
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/comics?title=${search}&skip=${skip}`
+          `https://site--marvel-backend--jnfnxpb8s78c.code.run/comics?title=${search}&skip=${skip}`
         );
         setData(response.data);
         setIsLoading(false);
-        console.log(response.data.message.results);
         setTotalPages(Math.ceil(response.data.message.count / limit));
-        console.log("totalPages :", totalPages);
       } catch (error) {
         console.log(error.message);
       }
@@ -54,7 +50,6 @@ const Comics = () => {
   ) : (
     <>
       <Header />
-
       <section className="comic-top-section">
         <div>
           <h1>{data.message.count} Comic(s)</h1>
@@ -142,6 +137,7 @@ const Comics = () => {
           );
         })}
       </div>
+      <Footer />
     </>
   );
 };

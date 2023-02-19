@@ -4,31 +4,29 @@ import { useLocation } from "react-router-dom";
 
 //pages, composants
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Comicsbycharacter = () => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
-  const [search, setSearch] = useState(null);
 
   const location = useLocation();
   const { charId, charName, charThumbPath, charThumbExt } = location.state;
-  console.log(charName);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/comics/${charId}`
+          `https://site--marvel-backend--jnfnxpb8s78c.code.run/comics/${charId}`
         );
         setData(response.data);
         setIsLoading(false);
-        console.log(response.data.message.comics);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, [search, charId]);
+  }, [charId]);
 
   const truncate = (string, n) => {
     return string?.length > n ? string.substr(0, n - 1) + "…" : string;
@@ -44,6 +42,7 @@ const Comicsbycharacter = () => {
         <h1>Comics with {charName} </h1>
         <img
           alt={charName}
+          // eslint-disable-next-line
           src={charThumbPath + "/standard_large" + "." + charThumbExt}
           className="character-image-logo"
         />
@@ -78,6 +77,7 @@ const Comicsbycharacter = () => {
           );
         })}
       </div>
+      <Footer />
     </>
   );
 };

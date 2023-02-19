@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 
 //pages, composants
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const Characters = () => {
   const [data, setData] = useState();
@@ -19,32 +20,17 @@ const Characters = () => {
   const limit = 100;
   const skip = (pageRequired - 1) * limit;
 
-  console.log("skip : ", skip);
-  console.log("pagerequired : ", pageRequired);
-  console.log("totalPages : ", totalPages);
-
   const handleClick = (action) => {
     if (action === "minus") setPageRequired(pageRequired - 1);
     else if (action === "plus") setPageRequired(pageRequired + 1);
     else if (action === "last") setPageRequired(totalPages);
   };
 
-  // fin pagination
-
   //favoris
-
   const charFav = JSON.stringify(charFavorites);
-  console.log("charfavorites : ", charFavorites);
-  console.log("charfav : ", charFav);
   if (charFav) {
     Cookies.set("Marvel-charFav", charFav);
   }
-  console.log("string cookie :", charFavorites);
-  // console.log(Cookies.get("Marvel-charFav"));
-  const cookie = Cookies.get("Marvel-charFav");
-  // console.log("cookie :", cookie);
-
-  //fin favoris
 
   // tronquage
   const truncate = (string, maxlength) => {
@@ -52,25 +38,22 @@ const Characters = () => {
       ? string.slice(0, maxlength - 1) + "…"
       : string;
   };
-  // fin tronquage
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4000/characters?name=${search}&skip=${skip}`
+          `https://site--marvel-backend--jnfnxpb8s78c.code.run/characters?name=${search}&skip=${skip}`
         );
         setData(response.data);
         setIsLoading(false);
-        console.log(response.data.message);
         setTotalPages(Math.ceil(response.data.message.count / limit));
-        console.log("totalPages :", totalPages);
       } catch (error) {
         console.log(error.message);
       }
     };
     fetchData();
-  }, [search]);
+  }, [search, skip]);
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
@@ -147,13 +130,7 @@ const Characters = () => {
                     }
                     className="character-image"
                   />
-                  <p
-                    onClick={() => {
-                      const newCharFavorites = [...charFavorites];
-                      newCharFavorites.push(character._id);
-                      setCharFavorites(newCharFavorites);
-                    }}
-                  >
+                  <p>
                     <span>★ {truncate(`${character.name}`, 40)}</span>
                   </p>
                 </div>
@@ -161,18 +138,29 @@ const Characters = () => {
                   <p className="character-description">
                     {truncate(`${character.description}`, 800)}
                   </p>
-
-                  <Link
-                    to="/Comicsbycharacter"
-                    state={{
-                      charName: character.name,
-                      charId: character._id,
-                      charThumbPath: character.thumbnail.path,
-                      charThumbExt: character.thumbnail.extension,
-                    }}
-                  >
-                    <button className="char-button">See his Comics 🤡</button>
-                  </Link>
+                  <div>
+                    <button
+                      className="fav-button"
+                      onClick={() => {
+                        const newCharFavorites = [...charFavorites];
+                        newCharFavorites.push(character._id);
+                        setCharFavorites(newCharFavorites);
+                      }}
+                    >
+                      Add to Fav
+                    </button>
+                    <Link
+                      to="/Comicsbycharacter"
+                      state={{
+                        charName: character.name,
+                        charId: character._id,
+                        charThumbPath: character.thumbnail.path,
+                        charThumbExt: character.thumbnail.extension,
+                      }}
+                    >
+                      <button className="pagination">See his Comics</button>
+                    </Link>
+                  </div>
                 </div>
               </article>
             </div>
@@ -181,6 +169,7 @@ const Characters = () => {
           );
         })}
       </div>
+      <Footer />
     </>
   );
 };
