@@ -14,7 +14,7 @@ import Favorites from "./pages/Favorites";
 function App() {
   // State dans lequel je stocke le token. Sa valeur de base sera :
   // - Je trouve un cookie token, ce cookie
-  // - Sinon, null
+  // - Sinon, rien
   const [token, setToken] = useState(Cookies.get("token-marvel") || null);
   // fonction pour stocker OU suppr le token dans le state + cookie
   const handleToken = (token) => {

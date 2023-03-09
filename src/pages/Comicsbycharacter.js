@@ -14,13 +14,14 @@ const Comicsbycharacter = ({ token }) => {
   const navigate = useNavigate();
 
   const location = useLocation();
+
   const { charId, charName, charThumbPath, charThumbExt } = location.state;
+  if (!charId) {
+    navigate("/");
+  }
 
   useEffect(() => {
     const fetchData = async () => {
-      if (!charId) {
-        navigate("/");
-      }
       try {
         const response = await axios.get(
           `https://site--marvel-backend--jnfnxpb8s78c.code.run/comics/${charId}`
@@ -32,7 +33,7 @@ const Comicsbycharacter = ({ token }) => {
       }
     };
     fetchData();
-  }, [charId]);
+  }, [charId, navigate]);
 
   const truncate = (string, n) => {
     return string?.length > n ? string.substr(0, n - 1) + "…" : string;
