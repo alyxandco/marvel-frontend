@@ -3,16 +3,19 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
-//pages, composants
+//pages, components
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const Characters = () => {
+const Characters = ({ token }) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [charFavorites, setCharFavorites] = useState([]);
+
+  const navigate = useNavigate();
 
   // pagination
   const [pageRequired, setPageRequired] = useState(1);
@@ -57,7 +60,7 @@ const Characters = () => {
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
-  ) : (
+  ) : token ? (
     <>
       <Header />
       <section className="character-top-section">
@@ -171,6 +174,8 @@ const Characters = () => {
       </div>
       <Footer />
     </>
+  ) : (
+    navigate("/")
   );
 };
 

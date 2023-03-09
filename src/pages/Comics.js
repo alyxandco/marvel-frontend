@@ -1,14 +1,17 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-//pages, composants
+//pages, components
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const Comics = () => {
+const Comics = ({ token }) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
+
+  const navigate = useNavigate();
 
   // pagination
   const [pageRequired, setPageRequired] = useState(1);
@@ -47,7 +50,7 @@ const Comics = () => {
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
-  ) : (
+  ) : token ? (
     <>
       <Header />
       <section className="comic-top-section">
@@ -139,6 +142,8 @@ const Comics = () => {
       </div>
       <Footer />
     </>
+  ) : (
+    navigate("/")
   );
 };
 

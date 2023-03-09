@@ -2,9 +2,9 @@ import ironman from "../components/assets/images/ironman.jpg";
 
 //pages, components
 import Navhome from "../components/Navhome";
-import Login from "../components/Login";
+import Signup from "../components/Signup";
 
-const Home = ({ handleToken, token }) => {
+const Homesignup = ({ handleToken, token }) => {
   return (
     <section>
       <div>
@@ -13,10 +13,10 @@ const Home = ({ handleToken, token }) => {
       {token ? (
         <Navhome handleToken={handleToken} token={token} />
       ) : (
-        <Login handleToken={handleToken} token={token} />
+        <Signup handleToken={handleToken} token={token} />
       )}
     </section>
   );
 };
 
-export default Home;
+export default Homesignup;

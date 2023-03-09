@@ -1,16 +1,19 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
-//pages, composants
+//pages, components
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const Favorites = () => {
+const Favorites = ({ token }) => {
   const [data, setData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // exploitation du contenu du cookie
+  const navigate = useNavigate();
+
+  // exploitation du contenu du cookie favoris
   const cookie = Cookies.get("Marvel-charFav");
 
   let obj;
@@ -43,7 +46,7 @@ const Favorites = () => {
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
-  ) : (
+  ) : token ? (
     <div>
       <Header />
       <section className="character-top-section">
@@ -89,6 +92,8 @@ const Favorites = () => {
       </div>
       <Footer />
     </div>
+  ) : (
+    navigate("/")
   );
 };
 export default Favorites;

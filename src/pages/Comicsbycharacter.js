@@ -1,20 +1,26 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-//pages, composants
+//pages, components
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-const Comicsbycharacter = () => {
+const Comicsbycharacter = ({ token }) => {
   const [data, setData] = useState();
   const [isLoading, setIsLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   const location = useLocation();
   const { charId, charName, charThumbPath, charThumbExt } = location.state;
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!charId) {
+        navigate("/");
+      }
       try {
         const response = await axios.get(
           `https://site--marvel-backend--jnfnxpb8s78c.code.run/comics/${charId}`
@@ -34,7 +40,7 @@ const Comicsbycharacter = () => {
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
-  ) : (
+  ) : charId ? (
     <>
       <Header />
 
@@ -79,6 +85,8 @@ const Comicsbycharacter = () => {
       </div>
       <Footer />
     </>
+  ) : (
+    navigate("/")
   );
 };
 
