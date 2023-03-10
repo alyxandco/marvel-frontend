@@ -22,7 +22,7 @@ const Signup = ({ handleToken, token }) => {
         username: username,
       };
       const response = await axios.post(
-        "https://site--marvel-backend--jnfnxpb8s78c.code.run/signup",
+        "https://site--marvel-backend--jnfnxpb8s78c.code.run/user/signup",
         data
       );
       if (response.data.token) {

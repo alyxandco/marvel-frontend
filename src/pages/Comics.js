@@ -36,7 +36,12 @@ const Comics = ({ token }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://site--marvel-backend--jnfnxpb8s78c.code.run/comics?title=${search}&skip=${skip}`
+          `https://site--marvel-backend--jnfnxpb8s78c.code.run/comics?title=${search}&skip=${skip}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setData(response.data);
         setIsLoading(false);
@@ -46,7 +51,7 @@ const Comics = ({ token }) => {
       }
     };
     fetchData();
-  }, [search, skip]);
+  }, [search, skip, token]);
 
   return isLoading ? (
     <p className="loading">Loading 🔥🔥🔥...</p>
